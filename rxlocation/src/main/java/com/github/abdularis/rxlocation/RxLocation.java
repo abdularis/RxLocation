@@ -8,6 +8,7 @@ import com.google.android.gms.location.LocationRequest;
 
 import io.reactivex.BackpressureStrategy;
 import io.reactivex.Flowable;
+import io.reactivex.Single;
 
 public class RxLocation {
 
@@ -26,6 +27,10 @@ public class RxLocation {
         locationRequest.setFastestInterval(fastestInterval);
         locationRequest.setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY);
         return getLocationUpdates(context, locationRequest);
+    }
+
+    public static Single<Location> getLastLocation(@NonNull Context context) {
+        return Single.create(new LastLocationSingleOnSubscribe(context));
     }
 
 }
