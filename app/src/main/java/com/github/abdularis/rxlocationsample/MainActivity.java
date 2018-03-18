@@ -7,6 +7,8 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.github.abdularis.rxlocation.RxLocation;
+import com.github.abdularis.rxlocation.RxPlace;
+import com.google.android.gms.location.places.PlaceLikelihood;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
@@ -16,11 +18,15 @@ import com.google.android.gms.maps.model.LatLngBounds;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 
+import java.util.List;
+
+import io.reactivex.Single;
 import io.reactivex.disposables.Disposable;
 
 public class MainActivity extends AppCompatActivity implements OnMapReadyCallback {
 
     private static final float DEFAULT_ZOOM_LEVEL = 12f;
+    private static final String TAG = "MainActivity";
 
     TextView textLoc;
     Disposable disposable;
@@ -39,6 +45,12 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
     }
 
     @Override
+    protected void onStart() {
+        super.onStart();
+        startListenLocationUpdate();
+    }
+
+    @Override
     protected void onStop() {
         super.onStop();
         if (disposable != null) {
@@ -53,11 +65,15 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
             mFollowMarker = true;
             return false;
         });
+    }
+
+    private void startListenLocationUpdate() {
         disposable = RxLocation.getLocationUpdates(this, 1000)
                 .subscribe(this::updateLocationUi,
                         throwable -> {
                             Toast.makeText(MainActivity.this, throwable.toString(), Toast.LENGTH_LONG).show();
                         });
+        Single<List<PlaceLikelihood>> o = RxPlace.getCurrentPlace(this);
     }
 
     private void updateLocationUi(Location location) {
