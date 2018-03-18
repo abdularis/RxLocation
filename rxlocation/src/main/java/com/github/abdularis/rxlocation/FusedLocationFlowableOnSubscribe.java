@@ -12,6 +12,12 @@ import com.google.android.gms.location.LocationServices;
 
 import io.reactivex.FlowableEmitter;
 
+/**
+ * Reactive fused location update
+ *
+ * @deprecated use FusedLocationClientFlowableOnSubscribe
+ */
+@Deprecated
 public class FusedLocationFlowableOnSubscribe extends GoogleApiClientFlowableOnSubscribe<Location> {
 
     private LocationRequest mLocationRequest;

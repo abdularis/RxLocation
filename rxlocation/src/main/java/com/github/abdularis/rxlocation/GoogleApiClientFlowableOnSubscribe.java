@@ -15,6 +15,7 @@ import com.google.android.gms.location.LocationServices;
 import io.reactivex.FlowableEmitter;
 import io.reactivex.FlowableOnSubscribe;
 
+@Deprecated
 public abstract class GoogleApiClientFlowableOnSubscribe<T> implements FlowableOnSubscribe<T> {
 
     private static final String TAG = "RxGoogleApiClient";
