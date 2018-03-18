@@ -12,12 +12,12 @@ import com.google.android.gms.location.LocationServices;
 import io.reactivex.FlowableEmitter;
 import io.reactivex.FlowableOnSubscribe;
 
-public class FusedLocationClientFlowableOnSubscribe implements FlowableOnSubscribe<Location> {
+public class LocationUpdateFlowableOnSubscribe implements FlowableOnSubscribe<Location> {
 
     private LocationRequest mLocationRequest;
     private FusedLocationProviderClient mLocationProviderClient;
 
-    public FusedLocationClientFlowableOnSubscribe(Context context, LocationRequest locationRequest) {
+    public LocationUpdateFlowableOnSubscribe(Context context, LocationRequest locationRequest) {
         mLocationRequest = locationRequest;
         mLocationProviderClient = LocationServices.getFusedLocationProviderClient(context);
     }

@@ -14,7 +14,7 @@ public class RxLocation {
 
     public static Flowable<Location> getLocationUpdates(@NonNull Context context, LocationRequest locationRequest) {
         return Flowable
-                .create(new FusedLocationClientFlowableOnSubscribe(context, locationRequest), BackpressureStrategy.MISSING);
+                .create(new LocationUpdateFlowableOnSubscribe(context, locationRequest), BackpressureStrategy.MISSING);
     }
 
     public static Flowable<Location> getLocationUpdates(@NonNull Context context, long interval) {

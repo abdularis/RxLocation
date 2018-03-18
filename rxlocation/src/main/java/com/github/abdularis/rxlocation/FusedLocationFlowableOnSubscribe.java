@@ -15,7 +15,7 @@ import io.reactivex.FlowableEmitter;
 /**
  * Reactive fused location update
  *
- * @deprecated use FusedLocationClientFlowableOnSubscribe
+ * @deprecated use LocationUpdateFlowableOnSubscribe
  */
 @Deprecated
 public class FusedLocationFlowableOnSubscribe extends GoogleApiClientFlowableOnSubscribe<Location> {
