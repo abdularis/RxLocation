@@ -3,6 +3,7 @@ package com.github.abdularis.rxlocation;
 import android.content.Context;
 import android.location.Location;
 
+import com.github.abdularis.rxlocation.errors.NoLocationAvailableException;
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationCallback;
 import com.google.android.gms.location.LocationRequest;
@@ -49,8 +50,11 @@ public class LocationUpdateFlowableOnSubscribe implements FlowableOnSubscribe<Lo
 
         @Override
         public void onLocationResult(LocationResult locationResult) {
-            super.onLocationResult(locationResult);
-            if (emitter != null) emitter.onNext(locationResult.getLastLocation());
+            if (emitter != null && locationResult.getLastLocation() != null) {
+                emitter.onNext(locationResult.getLastLocation());
+            } else {
+                emitter.onError(new NoLocationAvailableException());
+            }
         }
     }
 

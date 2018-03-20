@@ -2,7 +2,6 @@ package com.github.abdularis.rxlocation;
 
 import android.content.Context;
 import android.support.annotation.NonNull;
-import android.util.Log;
 
 import com.google.android.gms.location.places.PlaceDetectionClient;
 import com.google.android.gms.location.places.PlaceFilter;
@@ -73,7 +72,6 @@ public class CurrentPlaceSingleOnSubscribe implements SingleOnSubscribe<List<Pla
             if (mPlaceLikelihoodBufferResponse != null) {
                 mPlaceLikelihoodBufferResponse.release();
                 mPlaceLikelihoodBufferResponse = null;
-                Log.d("MainActivity", "disposed: " + mEmitter.hashCode());
                 mEmitter.setDisposable(null);
                 mEmitter = null;
             }

@@ -4,11 +4,8 @@ import android.location.Location;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.github.abdularis.rxlocation.RxLocation;
-import com.github.abdularis.rxlocation.RxPlace;
-import com.google.android.gms.location.places.PlaceLikelihood;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
@@ -18,15 +15,11 @@ import com.google.android.gms.maps.model.LatLngBounds;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 
-import java.util.List;
-
-import io.reactivex.Single;
 import io.reactivex.disposables.Disposable;
 
-public class MainActivity extends AppCompatActivity implements OnMapReadyCallback {
+public class LocationOnMapActivity extends AppCompatActivity implements OnMapReadyCallback {
 
     private static final float DEFAULT_ZOOM_LEVEL = 12f;
-    private static final String TAG = "MainActivity";
 
     TextView textLoc;
     Disposable disposable;
@@ -37,7 +30,7 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+        setContentView(R.layout.activity_location_on_map);
 
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
@@ -68,12 +61,12 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
     }
 
     private void startListenLocationUpdate() {
-        disposable = RxLocation.getLocationUpdates(this, 1000)
+        disposable = RxLocation
+                .getLocationUpdatesBuilder(this)
+                .setInterval(1000)
+                .build()
                 .subscribe(this::updateLocationUi,
-                        throwable -> {
-                            Toast.makeText(MainActivity.this, throwable.toString(), Toast.LENGTH_LONG).show();
-                        });
-        Single<List<PlaceLikelihood>> o = RxPlace.getCurrentPlace(this);
+                        throwable -> textLoc.setText(String.format("Err: %s", throwable.toString())));
     }
 
     private void updateLocationUi(Location location) {

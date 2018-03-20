@@ -3,6 +3,7 @@ package com.github.abdularis.rxlocation;
 import android.content.Context;
 import android.location.Location;
 
+import com.github.abdularis.rxlocation.errors.NoLocationAvailableException;
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationServices;
 
@@ -21,7 +22,12 @@ public class LastLocationSingleOnSubscribe implements SingleOnSubscribe<Location
     public void subscribe(SingleEmitter<Location> emitter) throws Exception {
         try {
             mLocationProviderClient.getLastLocation()
-                    .addOnSuccessListener(emitter::onSuccess)
+                    .addOnSuccessListener(location -> {
+                        if (location == null)
+                            emitter.onError(new NoLocationAvailableException());
+                        else
+                            emitter.onSuccess(location);
+                    })
                     .addOnFailureListener(emitter::onError);
         } catch (SecurityException e) {
             emitter.onError(e);
