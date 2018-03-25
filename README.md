@@ -36,7 +36,7 @@ android {
 
 And don't forget to add google play services location and places to your apps build.gradle file
 
-___
+---
 ## Usage
 There are two main entry point to use this library (however you could access the underlying implementation of *OnSubscribe obervables)
 
@@ -44,6 +44,7 @@ There are two main entry point to use this library (however you could access the
 - RxPlace
 - ...more will supported
 
+---
 - Continous location updates
 ~~~java
 // get the location update for every 2 seconds
