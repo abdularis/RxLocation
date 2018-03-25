@@ -3,7 +3,8 @@
 [![](https://jitpack.io/v/abdularis/RxLocation.svg)](https://jitpack.io/#abdularis/RxLocation)
 
 This is a simple library that wraps google location, places API into rxjava 2 Observable, Flowable, Single etc.
-___
+
+
 ## Setup
 Add repo to your root build.gradle
 ~~~xml
@@ -42,6 +43,8 @@ There are two main entry point to use this library (however you could access the
 - RxLocation
 - RxPlace
 - ...more will supported
+
+- Continous location updates
 ~~~java
 // get the location update for every 2 seconds
 Disposable disposable = RxLocation.getLocationUpdatesBuilder(context)
@@ -66,6 +69,24 @@ Disposable disposable = RxLocation.getLocationUpdatesBuilder(context)
 disposable.dispose();
 ~~~
 
+- Subscribe to location update multiple times without making a new request update
+~~~java
+Flowable<Location> locationFlowable = RxLocation.getLocationUpdatesBuilder(context)
+        .setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY)
+        .setInterval(2000)
+        .setFastestInterval(1000)
+        .build()
+
+CompositeDisposable compositeDisposable = new CompositeDisposable();
+
+// subscribe to locationFlowable & you'll get the latest location update
+compositeDisposable.add(locationFlowable.subscribe(this::onLocationUpdateOne, this::onLocUpdateError));
+compositeDisposable.add(locationFlowable.subscribe(this::onLocationUpdateTwo, this::onLocUpdateError));
+
+compositeDisposable.dispose();
+~~~
+
+- Current places
 ~~~java
 // get current place
 Disposable disposable = RxPlace.getCurrentPlaceBuilder(context)
@@ -87,6 +108,7 @@ Disposable disposable = RxPlace.getCurrentPlaceBuilder(context)
 disposable.dispose();
 ~~~
 
+- Combine current location and places observables
 ~~~java
 // composing observable, get current location at that time using gps and current places
 Disposable disposable = RxLocation.getCurrentLocationBuilder(context)
