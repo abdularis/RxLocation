@@ -16,10 +16,10 @@ public class RxLocation {
         return new LocationUpdatesBuilder<Flowable<Location>>(context) {
             @Override
             protected Flowable<Location> doBuild() {
-                return Flowable.create(
-                        new LocationUpdateFlowableOnSubscribe(getContext(), getLocationRequest()),
-                        BackpressureStrategy.MISSING
-                );
+                // build hot observable
+                return Flowable.create(new LocationUpdateFlowableOnSubscribe(getContext(), getLocationRequest()), BackpressureStrategy.LATEST)
+                        .replay(1)
+                        .refCount();
             }
         };
     }

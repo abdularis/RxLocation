@@ -15,14 +15,15 @@ import com.google.android.gms.maps.model.LatLngBounds;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 
-import io.reactivex.disposables.Disposable;
+import io.reactivex.Flowable;
+import io.reactivex.disposables.CompositeDisposable;
 
 public class LocationOnMapActivity extends AppCompatActivity implements OnMapReadyCallback {
 
     private static final float DEFAULT_ZOOM_LEVEL = 12f;
 
     TextView textLoc;
-    Disposable disposable;
+    CompositeDisposable compositeDisposable;
     GoogleMap mGoogleMap;
     Marker mMyLocMarker;
     boolean mFollowMarker;
@@ -46,8 +47,9 @@ public class LocationOnMapActivity extends AppCompatActivity implements OnMapRea
     @Override
     protected void onStop() {
         super.onStop();
-        if (disposable != null) {
-            disposable.dispose();
+        if (!compositeDisposable.isDisposed()) {
+            compositeDisposable.dispose();
+            compositeDisposable = null;
         }
     }
 
@@ -61,19 +63,29 @@ public class LocationOnMapActivity extends AppCompatActivity implements OnMapRea
     }
 
     private void startListenLocationUpdate() {
-        disposable = RxLocation
-                .getLocationUpdatesBuilder(this)
+        Flowable<Location> f = RxLocation.getLocationUpdatesBuilder(this)
                 .setInterval(1000)
-                .build()
-                .subscribe(this::updateLocationUi,
-                        throwable -> textLoc.setText(String.format("Err: %s", throwable.toString())));
+                .build();
+        compositeDisposable = new CompositeDisposable();
+
+        // you can subscribe to location flowable as much as you want
+        compositeDisposable.add(f.subscribe(this::updateMapsUi, this::onLocUpdateError));
+        compositeDisposable.add(f.subscribe(this::updateTextUi, this::onLocUpdateError));
     }
 
-    private void updateLocationUi(Location location) {
-        LatLng pos = new LatLng(location.getLatitude(), location.getLongitude());
-        textLoc.setText(pos.toString());
+    private void onLocUpdateError(Throwable throwable) {
+        textLoc.setText(String.format("Err: %s", throwable.toString()));
+    }
 
+    private void updateTextUi(Location location) {
+        String str = "lat/lng: " + location.getLatitude() + "/" + location.getLongitude();
+        textLoc.setText(str);
+    }
+
+    private void updateMapsUi(Location location) {
         if (mGoogleMap == null) return;
+
+        LatLng pos = new LatLng(location.getLatitude(), location.getLongitude());
         if (mMyLocMarker == null) {
             MarkerOptions options = new MarkerOptions().title("Me").position(pos);
             mMyLocMarker = mGoogleMap.addMarker(options);
