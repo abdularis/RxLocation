@@ -21,4 +21,16 @@
         android:onClick="onLocMapsClick"
         android:text="Location on Maps"/>
 
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:onClick="onGeocoderClick"
+        android:text="Geocoder"/>
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:onClick="onReverseGeocodingClick"
+        android:text="Reverse Geocoding"/>
+
 </LinearLayout>
