@@ -12,6 +12,37 @@ import io.reactivex.Single;
 
 public final class RxLocation {
 
+    public static Flowable<Location> locationUpdates(@NonNull Context context, long interval, long fastestInterval) {
+        return locationUpdatesBuilder(context)
+                .interval(interval)
+                .fastestInterval(fastestInterval)
+                .priority(LocationRequest.PRIORITY_HIGH_ACCURACY)
+                .build();
+    }
+
+    public static Flowable<Location> locationUpdates(@NonNull Context context, long interval) {
+        return locationUpdatesBuilder(context)
+                .interval(interval)
+                .fastestInterval(1000)
+                .priority(LocationRequest.PRIORITY_HIGH_ACCURACY)
+                .build();
+    }
+
+    public static Flowable<Location> locationUpdates(@NonNull Context context) {
+        return locationUpdatesBuilder(context)
+                .interval(1000)
+                .fastestInterval(1000)
+                .priority(LocationRequest.PRIORITY_HIGH_ACCURACY)
+                .build();
+    }
+
+    public Single<Location> locationCurrent(@NonNull Context context) {
+        return locationCurrentBuilder(context)
+                .priority(LocationRequest.PRIORITY_HIGH_ACCURACY)
+                .build();
+    }
+
+
     public static LocationUpdatesBuilder<Flowable<Location>> locationUpdatesBuilder(@NonNull Context context) {
         return new LocationUpdatesBuilder<Flowable<Location>>(context) {
             @Override

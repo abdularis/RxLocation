@@ -14,6 +14,17 @@ import io.reactivex.Single;
 
 public final class RxPlace {
 
+    public static Single<List<PlaceLikelihood>> currentPlace(@NonNull Context context, PlacesOptions placesOptions, PlaceFilter placeFilter) {
+        return currentPlaceBuilder(context)
+                .placesOptions(placesOptions)
+                .placeFilter(placeFilter)
+                .build();
+    }
+    
+    public static Single<List<PlaceLikelihood>> currentPlace(@NonNull Context context) {
+        return currentPlaceBuilder(context).build();
+    }
+
     public static PlaceBuilder currentPlaceBuilder(@NonNull Context context) {
         return new PlaceBuilder(context);
     }

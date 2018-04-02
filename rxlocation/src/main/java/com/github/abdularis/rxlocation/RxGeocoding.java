@@ -15,6 +15,33 @@ import io.reactivex.Maybe;
 
 public final class RxGeocoding {
 
+    public static Maybe<List<Address>> geocoding(@NonNull Context context, String locationName, int maxResults) {
+        return geocodingBuilder(context)
+                .locationName(locationName)
+                .maxResults(maxResults)
+                .build();
+    }
+
+    public static Maybe<List<Address>> geocoding(@NonNull Context context, String locationName) {
+        return geocodingBuilder(context)
+                .locationName(locationName)
+                .build();
+    }
+
+    public static Maybe<List<Address>> geocodingReverse(@NonNull Context context, double latitude, double longitude) {
+        return geocodingReverseBuilder(context)
+                .location(latitude, longitude)
+                .build();
+    }
+
+    public static Maybe<List<Address>> geocodingReverse(@NonNull Context context, double latitude, double longitude, int maxResults) {
+        return geocodingReverseBuilder(context)
+                .location(latitude, longitude)
+                .maxResults(maxResults)
+                .build();
+    }
+
+
     public static GeocodingBuilder geocodingBuilder(@NonNull Context context) {
         return new GeocodingBuilder(context);
     }
