@@ -18,21 +18,6 @@ public final class RxPlace {
         return new PlaceBuilder(context);
     }
 
-    @Deprecated
-    public static Single<List<PlaceLikelihood>> getCurrentPlace(@NonNull Context context) {
-        return currentPlaceBuilder(context).build();
-    }
-
-    @Deprecated
-    public static Single<List<PlaceLikelihood>> getCurrentPlace(@NonNull Context context,
-                                                                @Nullable PlacesOptions placesOptions,
-                                                                @Nullable PlaceFilter placeFilter) {
-        return currentPlaceBuilder(context)
-                .setPlacesOptions(placesOptions)
-                .setPlaceFilter(placeFilter)
-                .build();
-    }
-
     public static class PlaceBuilder {
 
         Context context;

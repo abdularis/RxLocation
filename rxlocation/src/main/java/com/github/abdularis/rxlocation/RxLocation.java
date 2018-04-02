@@ -42,38 +42,6 @@ public final class RxLocation {
         };
     }
 
-    @Deprecated
-    public static Flowable<Location> getLocationUpdates(@NonNull Context context, LocationRequest locationRequest) {
-        return locationUpdatesBuilder(context)
-                .setLocationRequest(locationRequest)
-                .build();
-    }
-
-    @Deprecated
-    public static Flowable<Location> getLocationUpdates(@NonNull Context context, long interval) {
-        return locationUpdatesBuilder(context)
-                .setInterval(interval)
-                .build();
-    }
-
-    @Deprecated
-    public static Flowable<Location> getLocationUpdates(@NonNull Context context, long interval, long fastestInterval) {
-        return locationUpdatesBuilder(context)
-                .setInterval(interval)
-                .setFastestInterval(fastestInterval)
-                .build();
-    }
-
-    @Deprecated
-    public static Single<Location> getCurrentLocation(@NonNull Context context) {
-        return locationCurrentBuilder(context).build();
-    }
-
-    @Deprecated
-    public static Single<Location> getLastLocation(@NonNull Context context) {
-        return locationLastBuilder(context).build();
-    }
-
 
     public static abstract class Builder<T> {
         Context context;
