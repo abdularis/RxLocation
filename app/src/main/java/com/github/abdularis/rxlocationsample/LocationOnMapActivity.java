@@ -64,7 +64,7 @@ public class LocationOnMapActivity extends AppCompatActivity implements OnMapRea
 
     private void startListenLocationUpdate() {
         Flowable<Location> f = RxLocation.locationUpdatesBuilder(this)
-                .setInterval(1000)
+                .interval(1000)
                 .build();
         compositeDisposable = new CompositeDisposable();
 

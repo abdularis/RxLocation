@@ -49,8 +49,8 @@ public class ReverseGeocodingActivity extends AppCompatActivity implements OnMap
 
         mTextResult.setText("Fetching...");
         RxGeocoding.geocodingBuilder(this)
-                .setLocationName(loc)
-                .setMaxResults(1)
+                .locationName(loc)
+                .maxResults(1)
                 .build()
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())

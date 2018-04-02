@@ -55,7 +55,6 @@ public final class RxLocation {
             return context;
         }
 
-
     }
 
     public static abstract class LocationUpdatesBuilder<T> extends Builder<T> {
@@ -72,7 +71,7 @@ public final class RxLocation {
             return locationRequest;
         }
 
-        public LocationUpdatesBuilder<T> setLocationRequest(LocationRequest locationRequest) {
+        public LocationUpdatesBuilder<T> locationRequest(LocationRequest locationRequest) {
             if (locationRequest != null) {
                 this.locationRequest = locationRequest;
             }
@@ -80,42 +79,42 @@ public final class RxLocation {
             return this;
         }
 
-        public LocationUpdatesBuilder<T> setInterval(long interval) {
+        public LocationUpdatesBuilder<T> interval(long interval) {
             locationRequest.setInterval(interval);
             return this;
         }
 
-        public LocationUpdatesBuilder<T> setFastestInterval(long interval) {
+        public LocationUpdatesBuilder<T> fastestInterval(long interval) {
             locationRequest.setFastestInterval(interval);
             return this;
         }
 
-        public LocationUpdatesBuilder<T> setPriority(int priority) {
+        public LocationUpdatesBuilder<T> priority(int priority) {
             locationRequest.setPriority(priority);
             return this;
         }
 
-        public LocationUpdatesBuilder<T> setExpirationDuration(long duration) {
+        public LocationUpdatesBuilder<T> expirationDuration(long duration) {
             locationRequest.setExpirationDuration(duration);
             return this;
         }
 
-        public LocationUpdatesBuilder<T> setExpirationTime(long l) {
+        public LocationUpdatesBuilder<T> expirationTime(long l) {
             locationRequest.setExpirationTime(l);
             return this;
         }
 
-        public LocationUpdatesBuilder<T> setMaxWaitTime(long l) {
+        public LocationUpdatesBuilder<T> maxWaitTime(long l) {
             locationRequest.setMaxWaitTime(l);
             return this;
         }
 
-        public LocationUpdatesBuilder<T> setNumUpdates(int i) {
+        public LocationUpdatesBuilder<T> numUpdates(int i) {
             locationRequest.setNumUpdates(i);
             return this;
         }
 
-        public LocationUpdatesBuilder<T> setSmallestDisplacement(float displacement) {
+        public LocationUpdatesBuilder<T> smallestDisplacement(float displacement) {
             locationRequest.setSmallestDisplacement(displacement);
             return this;
         }

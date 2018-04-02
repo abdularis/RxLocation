@@ -58,31 +58,31 @@ public final class RxGeocoding {
             });
         }
 
-        public GeocodingBuilder setLocationName(String locationName) {
+        public GeocodingBuilder locationName(String locationName) {
             this.locationName = locationName;
             return this;
         }
 
-        public GeocodingBuilder setMaxResults(int maxResults) {
+        public GeocodingBuilder maxResults(int maxResults) {
             this.maxResults = maxResults;
             return this;
         }
 
-        public GeocodingBuilder setLatLngBounds(LatLngBounds latLngBounds) {
+        public GeocodingBuilder latLngBounds(LatLngBounds latLngBounds) {
             this.latLngBounds = latLngBounds;
             return this;
         }
 
-        public GeocodingBuilder setLocale(Locale locale) {
-            this.locale = locale;
-            return this;
-        }
-
-        public GeocodingBuilder setLatLngBounds(double lowerLeftLatitude, double lowerLeftLongitude,
-                                                           double upperRightLatitude, double upperRightLongitude) {
+        public GeocodingBuilder latLngBounds(double lowerLeftLatitude, double lowerLeftLongitude,
+                                             double upperRightLatitude, double upperRightLongitude) {
             LatLng soutWest = new LatLng(lowerLeftLatitude, lowerLeftLongitude);
             LatLng northEast = new LatLng(upperRightLatitude, upperRightLongitude);
             latLngBounds = new LatLngBounds(soutWest, northEast);
+            return this;
+        }
+
+        public GeocodingBuilder locale(Locale locale) {
+            this.locale = locale;
             return this;
         }
     }
@@ -103,18 +103,18 @@ public final class RxGeocoding {
             return Maybe.fromCallable(() -> getGeocoder(context, locale).getFromLocation(latitude, longitude, maxResults));
         }
 
-        public GeocodingReverseBuilder setLocation(double latitude, double longitude) {
+        public GeocodingReverseBuilder location(double latitude, double longitude) {
             this.latitude = latitude;
             this.longitude = longitude;
             return this;
         }
 
-        public GeocodingReverseBuilder setMaxResults(int maxResults) {
+        public GeocodingReverseBuilder maxResults(int maxResults) {
             this.maxResults = maxResults;
             return this;
         }
 
-        public GeocodingReverseBuilder setLocale(Locale locale) {
+        public GeocodingReverseBuilder locale(Locale locale) {
             this.locale = locale;
             return this;
         }

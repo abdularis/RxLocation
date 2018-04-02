@@ -37,8 +37,8 @@ public class GeocodingActivity extends AppCompatActivity {
                     textLoc.setText(location.toString());
                     return RxGeocoding
                             .geocodingReverseBuilder(GeocodingActivity.this)
-                            .setMaxResults(1)
-                            .setLocation(location.getLatitude(), location.getLongitude())
+                            .maxResults(1)
+                            .location(location.getLatitude(), location.getLongitude())
                             .build()
                             .subscribeOn(Schedulers.io())
                             .observeOn(AndroidSchedulers.mainThread())

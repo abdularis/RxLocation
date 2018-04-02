@@ -32,12 +32,12 @@ public final class RxPlace {
             return Single.create(new CurrentPlaceSingleOnSubscribe(context, placesOptions, placeFilter));
         }
 
-        public PlaceBuilder setPlacesOptions(PlacesOptions placesOptions) {
+        public PlaceBuilder placesOptions(PlacesOptions placesOptions) {
             this.placesOptions = placesOptions;
             return this;
         }
 
-        public PlaceBuilder setPlaceFilter(PlaceFilter placeFilter) {
+        public PlaceBuilder placeFilter(PlaceFilter placeFilter) {
             this.placeFilter = placeFilter;
             return this;
         }
