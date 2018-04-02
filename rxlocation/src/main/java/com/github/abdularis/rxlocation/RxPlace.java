@@ -2,7 +2,6 @@ package com.github.abdularis.rxlocation;
 
 import android.content.Context;
 import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
 
 import com.google.android.gms.location.places.PlaceFilter;
 import com.google.android.gms.location.places.PlaceLikelihood;
@@ -20,7 +19,7 @@ public final class RxPlace {
                 .placeFilter(placeFilter)
                 .build();
     }
-    
+
     public static Single<List<PlaceLikelihood>> currentPlace(@NonNull Context context) {
         return currentPlaceBuilder(context).build();
     }
@@ -40,7 +39,7 @@ public final class RxPlace {
         }
 
         public Single<List<PlaceLikelihood>> build() {
-            return Single.create(new CurrentPlaceSingleOnSubscribe(context, placesOptions, placeFilter));
+            return Single.create(new PlaceCurrentSingleOnSubscribe(context, placesOptions, placeFilter));
         }
 
         public PlaceBuilder placesOptions(PlacesOptions placesOptions) {

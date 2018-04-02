@@ -19,11 +19,11 @@ import io.reactivex.SingleEmitter;
 import io.reactivex.SingleOnSubscribe;
 import io.reactivex.disposables.Disposable;
 
-public class CurrentPlaceSingleOnSubscribe implements SingleOnSubscribe<List<PlaceLikelihood>> {
+public class PlaceCurrentSingleOnSubscribe implements SingleOnSubscribe<List<PlaceLikelihood>> {
     private final PlaceDetectionClient mPlaceDetectionClient;
     private final PlaceFilter mPlaceFilter;
 
-    CurrentPlaceSingleOnSubscribe(Context context, PlacesOptions placesOptions, PlaceFilter placeFilter) {
+    PlaceCurrentSingleOnSubscribe(Context context, PlacesOptions placesOptions, PlaceFilter placeFilter) {
         mPlaceDetectionClient = Places.getPlaceDetectionClient(context, placesOptions);
         mPlaceFilter = placeFilter;
     }

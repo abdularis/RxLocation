@@ -59,7 +59,7 @@ public final class RxLocation {
         return new LocationUpdatesBuilder<Single<Location>>(context) {
             @Override
             public Single<Location> build() {
-                return Single.create(new CurrentLocationSingleOnSubscribe(getContext(), getLocationRequest()));
+                return Single.create(new LocationCurrentSingleOnSubscribe(getContext(), getLocationRequest()));
             }
         };
     }
@@ -68,7 +68,7 @@ public final class RxLocation {
         return new Builder<Single<Location>>(context) {
             @Override
             public Single<Location> build() {
-                return Single.create(new LastLocationSingleOnSubscribe(getContext()));
+                return Single.create(new LocationLastSingleOnSubscribe(getContext()));
             }
         };
     }

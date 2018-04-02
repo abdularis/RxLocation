@@ -10,11 +10,11 @@ import com.google.android.gms.location.LocationServices;
 import io.reactivex.SingleEmitter;
 import io.reactivex.SingleOnSubscribe;
 
-public class LastLocationSingleOnSubscribe implements SingleOnSubscribe<Location> {
+public class LocationLastSingleOnSubscribe implements SingleOnSubscribe<Location> {
 
     private final FusedLocationProviderClient mLocationProviderClient;
 
-    public LastLocationSingleOnSubscribe(Context context) {
+    public LocationLastSingleOnSubscribe(Context context) {
         mLocationProviderClient = LocationServices.getFusedLocationProviderClient(context);
     }
 

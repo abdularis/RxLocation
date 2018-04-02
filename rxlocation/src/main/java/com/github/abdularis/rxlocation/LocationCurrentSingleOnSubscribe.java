@@ -13,14 +13,14 @@ import com.google.android.gms.location.LocationServices;
 import io.reactivex.SingleEmitter;
 import io.reactivex.SingleOnSubscribe;
 
-public class CurrentLocationSingleOnSubscribe implements SingleOnSubscribe<Location> {
+public class LocationCurrentSingleOnSubscribe implements SingleOnSubscribe<Location> {
 
     private static final int DEF_UPDATE_INTERVAL = 500;
 
     private FusedLocationProviderClient mLocationProviderClient;
     private LocationRequest mLocationRequest;
 
-    public CurrentLocationSingleOnSubscribe(Context context, LocationRequest locationRequest) {
+    public LocationCurrentSingleOnSubscribe(Context context, LocationRequest locationRequest) {
         mLocationProviderClient = LocationServices.getFusedLocationProviderClient(context);
         mLocationRequest = locationRequest;
 
