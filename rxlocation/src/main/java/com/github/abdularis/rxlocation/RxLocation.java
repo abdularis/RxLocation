@@ -10,12 +10,12 @@ import io.reactivex.BackpressureStrategy;
 import io.reactivex.Flowable;
 import io.reactivex.Single;
 
-public class RxLocation {
+public final class RxLocation {
 
-    public static LocationUpdatesBuilder<Flowable<Location>> getLocationUpdatesBuilder(@NonNull Context context) {
+    public static LocationUpdatesBuilder<Flowable<Location>> locationUpdatesBuilder(@NonNull Context context) {
         return new LocationUpdatesBuilder<Flowable<Location>>(context) {
             @Override
-            protected Flowable<Location> doBuild() {
+            public Flowable<Location> build() {
                 // build hot observable
                 return Flowable.create(new LocationUpdateFlowableOnSubscribe(getContext(), getLocationRequest()), BackpressureStrategy.LATEST)
                         .replay(1)
@@ -24,19 +24,19 @@ public class RxLocation {
         };
     }
 
-    public static LocationUpdatesBuilder<Single<Location>> getCurrentLocationBuilder(@NonNull Context context) {
+    public static LocationUpdatesBuilder<Single<Location>> locationCurrentBuilder(@NonNull Context context) {
         return new LocationUpdatesBuilder<Single<Location>>(context) {
             @Override
-            protected Single<Location> doBuild() {
+            public Single<Location> build() {
                 return Single.create(new CurrentLocationSingleOnSubscribe(getContext(), getLocationRequest()));
             }
         };
     }
 
-    public static Builder<Single<Location>> getLastLocationBuilder(@NonNull Context context) {
+    public static Builder<Single<Location>> locationLastBuilder(@NonNull Context context) {
         return new Builder<Single<Location>>(context) {
             @Override
-            protected Single<Location> doBuild() {
+            public Single<Location> build() {
                 return Single.create(new LastLocationSingleOnSubscribe(getContext()));
             }
         };
@@ -44,21 +44,21 @@ public class RxLocation {
 
     @Deprecated
     public static Flowable<Location> getLocationUpdates(@NonNull Context context, LocationRequest locationRequest) {
-        return getLocationUpdatesBuilder(context)
+        return locationUpdatesBuilder(context)
                 .setLocationRequest(locationRequest)
                 .build();
     }
 
     @Deprecated
     public static Flowable<Location> getLocationUpdates(@NonNull Context context, long interval) {
-        return getLocationUpdatesBuilder(context)
+        return locationUpdatesBuilder(context)
                 .setInterval(interval)
                 .build();
     }
 
     @Deprecated
     public static Flowable<Location> getLocationUpdates(@NonNull Context context, long interval, long fastestInterval) {
-        return getLocationUpdatesBuilder(context)
+        return locationUpdatesBuilder(context)
                 .setInterval(interval)
                 .setFastestInterval(fastestInterval)
                 .build();
@@ -66,12 +66,12 @@ public class RxLocation {
 
     @Deprecated
     public static Single<Location> getCurrentLocation(@NonNull Context context) {
-        return getCurrentLocationBuilder(context).build();
+        return locationCurrentBuilder(context).build();
     }
 
     @Deprecated
     public static Single<Location> getLastLocation(@NonNull Context context) {
-        return getLastLocationBuilder(context).build();
+        return locationLastBuilder(context).build();
     }
 
 
@@ -81,13 +81,7 @@ public class RxLocation {
             this.context = context;
         }
 
-        public T build() {
-            T obj = doBuild();
-            context = null;
-            return obj;
-        }
-
-        protected abstract T doBuild();
+        public abstract T build();
 
         Context getContext() {
             return context;

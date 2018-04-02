@@ -18,11 +18,7 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 
-import java.util.List;
-
 import io.reactivex.android.schedulers.AndroidSchedulers;
-import io.reactivex.functions.Action;
-import io.reactivex.functions.Consumer;
 import io.reactivex.schedulers.Schedulers;
 
 public class ReverseGeocodingActivity extends AppCompatActivity implements OnMapReadyCallback {
@@ -52,7 +48,7 @@ public class ReverseGeocodingActivity extends AppCompatActivity implements OnMap
         }
 
         mTextResult.setText("Fetching...");
-        RxGeocoding.getGeocodingBuilder(this)
+        RxGeocoding.geocodingBuilder(this)
                 .setLocationName(loc)
                 .setMaxResults(1)
                 .build()

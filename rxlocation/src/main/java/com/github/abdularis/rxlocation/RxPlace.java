@@ -12,60 +12,47 @@ import java.util.List;
 
 import io.reactivex.Single;
 
-public class RxPlace {
+public final class RxPlace {
 
-    public static Builder<Single<List<PlaceLikelihood>>> getCurrentPlaceBuilder(@NonNull Context context) {
-        return new Builder<Single<List<PlaceLikelihood>>>(context) {
-            @Override
-            protected Single<List<PlaceLikelihood>> doBuild() {
-                return Single.create(new CurrentPlaceSingleOnSubscribe(getContext(), placesOptions, placeFilter));
-            }
-        };
+    public static PlaceBuilder currentPlaceBuilder(@NonNull Context context) {
+        return new PlaceBuilder(context);
     }
 
     @Deprecated
     public static Single<List<PlaceLikelihood>> getCurrentPlace(@NonNull Context context) {
-        return getCurrentPlaceBuilder(context).build();
+        return currentPlaceBuilder(context).build();
     }
 
     @Deprecated
     public static Single<List<PlaceLikelihood>> getCurrentPlace(@NonNull Context context,
                                                                 @Nullable PlacesOptions placesOptions,
                                                                 @Nullable PlaceFilter placeFilter) {
-        return getCurrentPlaceBuilder(context)
+        return currentPlaceBuilder(context)
                 .setPlacesOptions(placesOptions)
                 .setPlaceFilter(placeFilter)
                 .build();
     }
 
-    public abstract static class Builder<T> {
+    public static class PlaceBuilder {
 
         Context context;
         PlacesOptions placesOptions;
         PlaceFilter placeFilter;
 
-        Builder(@NonNull Context context) {
+        PlaceBuilder(@NonNull Context context) {
             this.context = context;
         }
 
-        public T build() {
-            T obj = doBuild();
-            context = null;
-            return obj;
+        public Single<List<PlaceLikelihood>> build() {
+            return Single.create(new CurrentPlaceSingleOnSubscribe(context, placesOptions, placeFilter));
         }
 
-        protected abstract T doBuild();
-
-        Context getContext() {
-            return context;
-        }
-
-        public Builder<T> setPlacesOptions(PlacesOptions placesOptions) {
+        public PlaceBuilder setPlacesOptions(PlacesOptions placesOptions) {
             this.placesOptions = placesOptions;
             return this;
         }
 
-        public Builder<T> setPlaceFilter(PlaceFilter placeFilter) {
+        public PlaceBuilder setPlaceFilter(PlaceFilter placeFilter) {
             this.placeFilter = placeFilter;
             return this;
         }

@@ -31,12 +31,12 @@ public class GeocodingActivity extends AppCompatActivity {
         textLoc = findViewById(R.id.text_loc);
         textResult = findViewById(R.id.text_result);
 
-        disposable = RxLocation.getCurrentLocationBuilder(this)
+        disposable = RxLocation.locationCurrentBuilder(this)
                 .build()
                 .flatMap((Function<Location, Single<List<Address>>>) location -> {
                     textLoc.setText(location.toString());
                     return RxGeocoding
-                            .getReverseGeocodingBuilder(GeocodingActivity.this)
+                            .geocodingReverseBuilder(GeocodingActivity.this)
                             .setMaxResults(1)
                             .setLocation(location.getLatitude(), location.getLongitude())
                             .build()

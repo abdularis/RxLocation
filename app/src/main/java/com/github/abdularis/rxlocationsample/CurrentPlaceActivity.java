@@ -3,15 +3,12 @@ package com.github.abdularis.rxlocationsample;
 import android.location.Location;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.util.Log;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.github.abdularis.rxlocation.RxLocation;
 import com.github.abdularis.rxlocation.RxPlace;
-import com.google.android.gms.location.LocationRequest;
 import com.google.android.gms.location.places.Place;
 import com.google.android.gms.location.places.PlaceLikelihood;
 import com.google.android.gms.maps.model.LatLng;
@@ -20,9 +17,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import io.reactivex.Single;
-import io.reactivex.SingleSource;
 import io.reactivex.disposables.Disposable;
-import io.reactivex.functions.Consumer;
 import io.reactivex.functions.Function;
 
 public class CurrentPlaceActivity extends AppCompatActivity {
@@ -43,13 +38,13 @@ public class CurrentPlaceActivity extends AppCompatActivity {
         mListViewAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1);
         listView.setAdapter(mListViewAdapter);
 
-        mDisposable = RxLocation.getCurrentLocationBuilder(this)
+        mDisposable = RxLocation.locationCurrentBuilder(this)
                 .build()
                 .flatMap((Function<Location, Single<List<PlaceLikelihood>>>) location -> {
                     LatLng ll = new LatLng(location.getLatitude(), location.getLongitude());
                     mTextLoc.setText(ll.toString());
                     return RxPlace
-                            .getCurrentPlaceBuilder(CurrentPlaceActivity.this)
+                            .currentPlaceBuilder(CurrentPlaceActivity.this)
                             .build();
                 })
                 .subscribe(placeLikelihoods -> {

@@ -2,10 +2,9 @@ package com.github.abdularis.rxlocation;
 
 import android.content.Context;
 import android.location.Address;
+import android.location.Geocoder;
 import android.support.annotation.NonNull;
 
-import com.github.abdularis.rxlocation.geocoding.GeocodingOnSubscribe;
-import com.github.abdularis.rxlocation.geocoding.ReverseGeocodingOnSubscribe;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.LatLngBounds;
 
@@ -16,42 +15,66 @@ import io.reactivex.Maybe;
 
 public final class RxGeocoding {
 
-    public static GeocodingBuilder getGeocodingBuilder(@NonNull Context context) {
+    public static GeocodingBuilder geocodingBuilder(@NonNull Context context) {
         return new GeocodingBuilder(context);
     }
 
-    public static ReverseGeocodingBuilder getReverseGeocodingBuilder(@NonNull Context context) {
-        return new ReverseGeocodingBuilder(context);
+    public static GeocodingReverseBuilder geocodingReverseBuilder(@NonNull Context context) {
+        return new GeocodingReverseBuilder(context);
     }
 
-    public static class GeocodingBuilder extends RxLocation.Builder<Maybe<List<Address>>> {
+    private static Geocoder getGeocoder(Context context, Locale locale) {
+        if (locale != null) return new Geocoder(context, locale);
+        return new Geocoder(context);
+    }
 
-        private Locale mLocale;
-        private String mLocationName;
-        private int mMaxResults;
-        private LatLngBounds mLatLngBounds;
+    public static class GeocodingBuilder {
+
+        private final Context context;
+        private Locale locale;
+        private String locationName;
+        private int maxResults;
+        private LatLngBounds latLngBounds;
 
         GeocodingBuilder(@NonNull Context context) {
-            super(context);
+            this.context = context;
+        }
+
+        public Maybe<List<Address>> build() {
+            return Maybe.fromCallable(() -> {
+                Geocoder geocoder = getGeocoder(context, locale);
+                if (latLngBounds != null) {
+                    double lowerLeftLatitude = latLngBounds.southwest.latitude;
+                    double lowerLeftLongitude = latLngBounds.southwest.longitude;
+                    double upperRightLatitude = latLngBounds.northeast.latitude;
+                    double upperRightLongitude = latLngBounds.northeast.longitude;
+                    return geocoder.getFromLocationName(
+                            locationName, maxResults,
+                            lowerLeftLatitude, lowerLeftLongitude,
+                            upperRightLatitude, upperRightLongitude);
+                } else {
+                    return geocoder.getFromLocationName(locationName, maxResults);
+                }
+            });
         }
 
         public GeocodingBuilder setLocationName(String locationName) {
-            mLocationName = locationName;
+            this.locationName = locationName;
             return this;
         }
 
         public GeocodingBuilder setMaxResults(int maxResults) {
-            mMaxResults = maxResults;
+            this.maxResults = maxResults;
             return this;
         }
 
         public GeocodingBuilder setLatLngBounds(LatLngBounds latLngBounds) {
-            mLatLngBounds = latLngBounds;
+            this.latLngBounds = latLngBounds;
             return this;
         }
 
         public GeocodingBuilder setLocale(Locale locale) {
-            mLocale = locale;
+            this.locale = locale;
             return this;
         }
 
@@ -59,46 +82,41 @@ public final class RxGeocoding {
                                                            double upperRightLatitude, double upperRightLongitude) {
             LatLng soutWest = new LatLng(lowerLeftLatitude, lowerLeftLongitude);
             LatLng northEast = new LatLng(upperRightLatitude, upperRightLongitude);
-            mLatLngBounds = new LatLngBounds(soutWest, northEast);
+            latLngBounds = new LatLngBounds(soutWest, northEast);
             return this;
-        }
-
-        @Override
-        protected Maybe<List<Address>> doBuild() {
-            return Maybe.create(new GeocodingOnSubscribe(getContext(), mLocale, mLocationName, mMaxResults, mLatLngBounds));
         }
     }
 
-    public static class ReverseGeocodingBuilder extends RxLocation.Builder<Maybe<List<Address>>> {
+    public static class GeocodingReverseBuilder {
 
-        private Locale mLocale;
-        private double mLatitude;
-        private double mLongitude;
-        private int mMaxResults;
+        private final Context context;
+        private Locale locale;
+        private double latitude;
+        private double longitude;
+        private int maxResults;
 
-        ReverseGeocodingBuilder(@NonNull Context context) {
-            super(context);
+        GeocodingReverseBuilder(@NonNull Context context) {
+            this.context = context;
         }
 
-        public ReverseGeocodingBuilder setLocation(double latitude, double longitude) {
-            mLatitude = latitude;
-            mLongitude = longitude;
+        public Maybe<List<Address>> build() {
+            return Maybe.fromCallable(() -> getGeocoder(context, locale).getFromLocation(latitude, longitude, maxResults));
+        }
+
+        public GeocodingReverseBuilder setLocation(double latitude, double longitude) {
+            this.latitude = latitude;
+            this.longitude = longitude;
             return this;
         }
 
-        public ReverseGeocodingBuilder setMaxResults(int maxResults) {
-            mMaxResults = maxResults;
+        public GeocodingReverseBuilder setMaxResults(int maxResults) {
+            this.maxResults = maxResults;
             return this;
         }
 
-        public ReverseGeocodingBuilder setLocale(Locale locale) {
-            mLocale = locale;
+        public GeocodingReverseBuilder setLocale(Locale locale) {
+            this.locale = locale;
             return this;
-        }
-
-        @Override
-        protected Maybe<List<Address>> doBuild() {
-            return Maybe.create(new ReverseGeocodingOnSubscribe(getContext(), mLocale, new LatLng(mLatitude, mLongitude), mMaxResults));
         }
     }
 
