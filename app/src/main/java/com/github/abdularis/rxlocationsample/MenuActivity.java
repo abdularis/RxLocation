@@ -24,12 +24,12 @@ public class MenuActivity extends AppCompatActivity {
     }
 
     public void onGeocoderClick(View view) {
-        Intent i = new Intent(this, GeocodingActivity.class);
+        Intent i = new Intent(this, GeocodingReverseActivity.class);
         startActivity(i);
     }
 
     public void onReverseGeocodingClick(View view) {
-        Intent i = new Intent(this, ReverseGeocodingActivity.class);
+        Intent i = new Intent(this, GeocodingActivity.class);
         startActivity(i);
     }
 }

@@ -25,12 +25,12 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:onClick="onGeocoderClick"
-        android:text="Geocoder"/>
+        android:text="Geocoding Reverse"/>
 
     <Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:onClick="onReverseGeocodingClick"
-        android:text="Reverse Geocoding"/>
+        android:text="Geocoding"/>
 
 </LinearLayout>
