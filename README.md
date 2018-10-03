@@ -19,7 +19,7 @@ allprojects {
 Add dependency to your app build.gradle (your app)
 ~~~xml
 dependencies {
-	compile 'com.github.abdularis:RxLocation:v0.2-alpha'
+	implementation 'com.github.abdularis:RxLocation:v0.2-alpha'
 }
 ~~~
 
@@ -71,6 +71,7 @@ disposable.dispose();
 ~~~
 
 - Subscribe to location update multiple times without making a new request update
+
 ~~~java
 Flowable<Location> locationFlowable = RxLocation.getLocationUpdatesBuilder(context)
         .setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY)
@@ -88,6 +89,7 @@ compositeDisposable.dispose();
 ~~~
 
 - Current places
+
 ~~~java
 // get current place
 Disposable disposable = RxPlace.getCurrentPlaceBuilder(context)
@@ -110,6 +112,7 @@ disposable.dispose();
 ~~~
 
 - Combine current location and places observables
+
 ~~~java
 // composing observable, get current location at that time using gps and current places
 Disposable disposable = RxLocation.getCurrentLocationBuilder(context)
@@ -137,3 +140,9 @@ Disposable disposable = RxLocation.getCurrentLocationBuilder(context)
 // don't forget to dispose when you no longer need it
 disposable.dispose();
 ~~~
+
+## Contribute
+Feel free to contribute, add new features, improve anything :smile:
+
+## License
+Apache License 2.0
